@@ -1,0 +1,34 @@
+name: demo-serverless-ci-cd-workflow
+
+run-name: ${{ github.run_id }}-UdeA-Workflow-Execution
+
+concurrency: 
+  group: default 
+  #cancel-in-progress: true #cancel any currently running job or workflow in the same concurrency group.
+
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Environment to deploy
+        type: choice
+        options:
+          - 'sandbox'
+          - 'development'
+        required: true
+        default: 'sandbox'
+
+jobs:
+  continuos_integration_job:
+    uses: ./.github/workflows/demo-serverless-ci-workflow.yaml
+    with:
+      node_version: 14.x
+    secrets: inherit
+
+  continuos_deployment_job:
+    needs: continuos_integration_job
+    uses: ./.github/workflows/demo-serverless-cd-workflow.yaml
+    with:
+      environmentTarget: ${{ inputs.environment }}
+      releaseVersion: ${{ needs.continuos_integration_job.outputs.artifact_base_name }}
+    secrets: inherit
