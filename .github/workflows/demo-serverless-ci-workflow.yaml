@@ -59,8 +59,13 @@ jobs:
       id: name_artifact
       run: echo "artifact_base_name=artifact-${{ github.run_id }}" >> $GITHUB_OUTPUT
 
+    - name: Zip artifact for deployment in Lambda
+      if: inputs.infraestructure_target == 'Lambda'
+      run: zip -j ${{ steps.name_artifact.outputs.artifact_base_name }}.zip ./HelloRutaNLambda/index.js
+
     - name: Zip artifact for deployment
-      run: zip -j ${{ steps.name_artifact.outputs.artifact_base_name }}.zip ${{ inputs.folder_target }}
+      if: inputs.infraestructure_target == 'AzureFunction'
+      run: zip -r ${{ steps.name_artifact.outputs.artifact_base_name }}.zip * -x 'node_modules/*'
       
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v3
