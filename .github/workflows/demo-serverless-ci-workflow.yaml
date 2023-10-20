@@ -63,7 +63,7 @@ jobs:
       if: inputs.infraestructure_target == 'Lambda'
       run: zip -j ${{ steps.name_artifact.outputs.artifact_base_name }}.zip ./HelloRutaNLambda/index.js
 
-    - name: Zip artifact for deployment
+    - name: Zip artifact for deployment in Azure Function
       if: inputs.infraestructure_target == 'AzureFunction'
       run: zip -r ${{ steps.name_artifact.outputs.artifact_base_name }}.zip * -x 'node_modules/*'
 
@@ -74,9 +74,18 @@ jobs:
         echo "LS:"
         ls
       
-    - name: Upload artifact for deployment job
+    - name: Upload artifact for deployment job in Lambda
+      if: inputs.infraestructure_target == 'Lambda'
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.name_artifact.outputs.artifact_base_name }}-ci
-        path: ${{ steps.name_artifact.outputs.artifact_base_name }}.zip
+        path: Lambda/${{ steps.name_artifact.outputs.artifact_base_name }}.zip
+        retention-days: 5
+
+    - name: Upload artifact for deployment job in Azure Function
+      if: inputs.infraestructure_target == 'AzureFunction'
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.name_artifact.outputs.artifact_base_name }}-ci
+        path: AzureFunction/${{ steps.name_artifact.outputs.artifact_base_name }}.zip
         retention-days: 5
