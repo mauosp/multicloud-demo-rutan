@@ -32,7 +32,7 @@ jobs:
     with:
       infraestructure_target: ${{ inputs.infraestructure }}
       node_version: ${{ inputs.infraestructure == 'Lambda' && '14.x' || '18.x' }}
-      folder_target: ${{ inputs.infraestructure == 'Lambda' && './HelloUdeALambda/index.js' || '* -x "node_modules/*"' }}
+      folder_target: ${{ inputs.infraestructure == 'Lambda' && './HelloRutaNLambda/index.js' || '* -x "node_modules/*"' }}
     secrets: inherit
 
   # continuos_deployment_job:
