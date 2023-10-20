@@ -66,6 +66,13 @@ jobs:
     - name: Zip artifact for deployment
       if: inputs.infraestructure_target == 'AzureFunction'
       run: zip -r ${{ steps.name_artifact.outputs.artifact_base_name }}.zip * -x 'node_modules/*'
+
+    - name: 'npm test'
+      shell: bash 
+      run: |
+        pwd
+        echo "LS:"
+        ls
       
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v3
