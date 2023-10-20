@@ -35,10 +35,17 @@ jobs:
       folder_target: ${{ inputs.infraestructure == 'Lambda' && './HelloRutaNLambda/index.js' || '* -x "node_modules/*"' }}
     secrets: inherit
 
-  # continuos_deployment_job:
+  # continuos_deployment_job_lambda:
   #   needs: continuos_integration_job
-  #   uses: ./.github/workflows/demo-serverless-cd-workflow.yaml
+  #   uses: ./.github/workflows/demo-serverless-lambda-cd-workflow.yaml
   #   with:
   #     environmentTarget: ${{ inputs.environment }}
   #     releaseVersion: ${{ needs.continuos_integration_job.outputs.artifact_base_name }}
   #   secrets: inherit
+
+  continuos_deployment_job_azf:
+    needs: continuos_integration_job
+    uses: ./.github/workflows/demo-serverless-azf-cd-workflow.yaml
+    with:
+      releaseVersion: ${{ needs.continuos_integration_job.outputs.artifact_base_name }}
+    secrets: inherit

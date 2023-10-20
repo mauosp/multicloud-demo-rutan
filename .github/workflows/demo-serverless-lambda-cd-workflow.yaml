@@ -1,4 +1,4 @@
-name: demo-serverless-cd-workflow
+name: demo-serverless-lambda-cd-workflow
 
 on:
   workflow_call:
