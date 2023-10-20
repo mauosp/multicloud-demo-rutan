@@ -11,11 +11,21 @@ on:
         type: string
         description: 'Node version to use'     
         required: true
-        default: '14.x'
+      infraestructure_target:
+        type: string
+        description: 'Infraestructure target for ci'     
+        required: true
+      folder_target:
+        type: string
+        description: 'Folder to compress'     
+        required: true
 
 jobs:
   continuos_integration_job:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.infraestructure_target == 'Lambda' && './Lambda' || './AzureFunction)' }}
     outputs:
       artifact_base_name: ${{ steps.name_artifact.outputs.artifact_base_name }}
       
@@ -50,7 +60,7 @@ jobs:
       run: echo "artifact_base_name=artifact-${{ github.run_id }}" >> $GITHUB_OUTPUT
 
     - name: Zip artifact for deployment
-      run: zip -j ${{ steps.name_artifact.outputs.artifact_base_name }}.zip ./HelloUdeALambda/index.js
+      run: zip -j ${{ steps.name_artifact.outputs.artifact_base_name }}.zip ${{ inputs.folder_target }}
       
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v3
