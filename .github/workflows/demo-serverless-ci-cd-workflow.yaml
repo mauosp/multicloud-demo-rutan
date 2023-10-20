@@ -1,6 +1,6 @@
 name: demo-serverless-ci-cd-workflow
 
-run-name: ${{ github.run_id }}-UdeA-Workflow-Execution
+run-name: ${{ github.run_id }}-RutaN-Workflow-Execution
 
 concurrency: 
   group: default 

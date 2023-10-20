@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{ inputs.infraestructure_target == 'Lambda' && './Lambda' || './AzureFunction)' }}
+        working-directory: ${{ inputs.infraestructure_target == 'Lambda' && 'Lambda' || 'AzureFunction' }}
     outputs:
       artifact_base_name: ${{ steps.name_artifact.outputs.artifact_base_name }}
       
